@@ -1,2 +1,4 @@
 # SystemVerilog_practice
-SV practice record
+This repository contains my SystemVerilog learning projects.
+
+## projects
