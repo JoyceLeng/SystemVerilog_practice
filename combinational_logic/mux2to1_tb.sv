@@ -16,7 +16,7 @@ always_comb
   begin
     assert(out==(sel?in1:in0));
     else
-      $error(''output is not correct'');
+      $error("output is not correct");
   end
 
 //test stimulus
