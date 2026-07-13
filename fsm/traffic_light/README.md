@@ -6,10 +6,10 @@ stateDiagram-v2
 
 [*] --> ns_green
 
-ns_green --> ns_amber: timer: 60s
-ns_amber --> ew_green: timer: 3s
-ew_green --> ew_amber: timer: 60s
-ew_amber --> ns_green: timer: 3s
+ns_green --> ns_amber: timer_60s
+ns_amber --> ew_green: timer_3s
+ew_green --> ew_amber: timer_60s
+ew_amber --> ns_green: timer_3s
 
 ns_green --> all_red: emergency
 ns_amber --> all_red: emergency
