@@ -1,5 +1,6 @@
 # Traffic Light FSM
 ## State Diagram
+
 '''mermaid
 stateDiagram-v2
 
