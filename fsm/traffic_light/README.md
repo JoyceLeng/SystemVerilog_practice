@@ -24,3 +24,6 @@ This project implements a traffic light controller using a finite state machine
 
 ## Simulation Waveform
 ![Simulation Waveform](traffic_light_waveform.png)
+
+## Monitor Result
+![Monitor Result](traffic_light_monitor_result.png)
