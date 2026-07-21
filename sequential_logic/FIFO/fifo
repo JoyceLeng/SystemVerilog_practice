@@ -1,0 +1,51 @@
+//Synchronous FIFO
+module fifo #(parameter width = 4, parameter depth = 4)
+(input logic clk, rst_n,
+ input logic write_enable,
+ input logic read_enable,
+ input logic [width-1:0]write_data,
+ output logic [width-1:0]read_data,
+ output logic full,   //generate full flag
+ output logic empty  //generate empty flag
+);
+
+logic [$clog2(depth)-1:0]write_pointer;  //generate write pointer
+logic [$clog2(depth)-1:0]read_pointer;  //generate read pointer
+logic [width-1:0]memory[0:depth-1]; //depth entries, and each entry has width bits
+logic [$clog2(depth+1)-1:0]counter;  //use for updating flags
+
+//set meanings for 2 flags
+assign empty = (counter == 0);
+assign full = (counter == depth);
+
+always_ff @(posedge clk, negedge rst_n)
+  begin
+    if(!rst_n) begin
+      write_pointer <= '0;  //clear pointers
+      read_pointer <= '0;
+      counter <= '0;
+      read_data <= '0;
+    end
+    else begin
+      if(write_enable&&!full) //prevent writes when full
+        begin
+          memory[write_pointer] <= write_data;
+          write_pointer <= write_pointer + 1;
+        end
+      if(read_enable&&!empty) //prevent reads when empty
+        begin
+          read_data <= memory[read_pointer];
+          read_pointer <= read_pointer + 1;
+        end
+      //update counter to update flags
+      if((write_enable&&!full) && !(read_enable&&!empty))
+        counter <= counter + 1;
+      else if(!(write_enable&&!full) && (read_enable&&!empty))
+        counter <= counter - 1;
+      else
+        counter <= counter;
+    end
+
+  end
+
+endmodule
