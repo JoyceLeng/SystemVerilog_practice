@@ -1,0 +1,93 @@
+//testbench for Synchronous FIFO
+module fifo_tb #(parameter width = 4);
+
+//inputs
+logic clk, rst_n;
+logic write_enable;
+logic read_enable;
+logic [width-1:0]write_data;
+//output
+logic [width-1:0]read_data;
+logic full;
+logic empty;
+
+//instantiantion
+fifo #(.width(width)) dut(.*);
+
+//assertion
+property fifo_check;
+  @(posedge clk)
+  //(read_enable&&!empty) |-> (read_data == dut.memory[dut.read_pointer]);
+  (read_enable&&!empty) |-> read_data == $past(write_data);
+endproperty
+
+assert property (fifo_check)
+else
+  $error("FIFO failed");
+
+//monitor
+initial begin
+  $monitor("Time=%0t write_data=%b read_data=%b",
+           $time,
+           write_data,
+           read_data);
+end
+
+//stimulus
+initial begin
+  clk = '0;
+  forever #20 clk = ~clk;
+end
+
+initial begin
+  rst_n = '0;
+  #10;
+  rst_n = '1;
+end
+
+initial
+  begin
+    @(posedge clk);
+    write_enable = 0;
+    read_enable = 0;
+    write_data = 4'b0000;  //expected empty = 1
+    @(posedge clk);
+    write_enable = 1;
+    read_enable = 1;
+    write_data = 4'b1010;  //expected mem[0]=1010
+    @(posedge clk);
+    write_enable = 1;
+    read_enable = 1;
+    write_data = 4'b1101;  //expected mem[1]=1101
+    @(posedge clk);
+    write_enable = 1;
+    read_enable = 1;
+    write_data = 4'b0010;  //expected mem[2]=0010
+    @(posedge clk);
+    write_enable = 1;
+    read_enable = 1;
+    write_data = 4'b0011;  //expected mem[3]=0011
+    //expected full = 1
+
+    @(posedge clk);
+    write_enable = 1;
+    read_enable = 1;
+    write_data = 4'b1011;
+    @(posedge clk);
+    write_enable = 1;
+    read_enable = 1;
+    write_data = 4'b0010;
+    @(posedge clk);
+    write_enable = 1;
+    read_enable = 1;
+    write_data = 4'b1101;
+    @(posedge clk);
+    write_enable = 1;
+    read_enable = 1;
+    write_data = 4'b0100;
+
+    $finish;
+
+  end
+
+endmodule
