@@ -43,11 +43,9 @@ typedef enum logic [2:0]{
 
 }state_t;
 
-state_t previous_state;
-state_t previous2_state;
-state_t previous3_state;
 state_t present_state;
 state_t next_state;
+state_t return_state; //remember which state was interrupted
 
 //set the flags definition
 //when traffic lights are green, green_timeout make a sence
@@ -62,22 +60,32 @@ assign WALK_timeout = (present_state == PED_WALK)&&(counter_WALK == WALK_TIME - 
 assign ALL_RED_timeout = ((present_state == ALL_RED_BEFORE_PED)||(present_state == ALL_RED_AFTER_PED))
                          &&(counter_ALL_RED == ALL_RED_TIME - 1);
 
-//state register
+//present state register
 //asynchronous
 always_ff @(posedge clk, negedge rst_n)
   begin
     if(!rst_n) begin
-      previous_state <= NS_GREEN;
-      previous2_state <= NS_GREEN;
-      previous3_state <= NS_GREEN;
       present_state <= NS_GREEN;
     end
     else begin
-      previous_state <= present_state;
-      previous2_state <= previous_state;
-      previous3_state <= previous2_state;
       present_state <= next_state;
     end
+  end
+
+//return state register
+//to remember which state was interrupted
+always_ff @(posedge clk, negedge rst_n)
+  begin
+    if(!rst_n)
+      return_state <= NS_GREEN;
+    else if(present_state == NS_GREEN && next_state == ALL_RED_BEFORE_PED)
+      return_state <= NS_GREEN;
+    else if(present_state == NS_AMBER && next_state == ALL_RED_BEFORE_PED)
+      return_state <= NS_AMBER;
+    else if(present_state == EW_GREEN && next_state == ALL_RED_BEFORE_PED)
+      return_state <= EW_GREEN;
+    else if(present_state == EW_AMBER && next_state == ALL_RED_BEFORE_PED)
+      return_state <= EW_AMBER;
   end
 
 //change counters to update the flags
@@ -254,7 +262,7 @@ always_comb
       ALL_RED_AFTER_PED:
         begin
           if(ALL_RED_timeout)
-            unique case(previous3_state)
+            unique case(return_state)
               NS_GREEN: next_state = NS_AMBER;
               NS_AMBER: next_state = EW_GREEN;
               EW_GREEN: next_state = EW_AMBER;
