@@ -53,13 +53,13 @@ endproperty
 
 property PED_WALK;
   @(posedge clk)
-  dut.ALL_RED_timeout 
+  (dut.present_state == dut.ALL_RED_BEFORE_PED && dut.ALL_RED_timeout) 
             |=> (dut.present_state == dut.PED_WALK);
 endproperty
 
 property ALL_RED_AFTER_PED;
   @(posedge clk)
-  dut.WALK_timeout |=> (dut.present_state == dut.ALL_RED_AFTER_PED);
+  (dut.present_state == dut.PED_WALK && dut.WALK_timeout) |=> (dut.present_state == dut.ALL_RED_AFTER_PED);
 endproperty
 
 assert property (reset_state)
@@ -96,34 +96,34 @@ else
 
 //monitor
 initial begin
-  $monitor("Time=%0t pedestrian_button=%b pedestrian_light=%b ns_light=%b ew_light=%b state=%s",
+  $monitor("Time=%0t present_state=%s pedestrian_button=%b pedestrian_request=%b counter_GREEN=%0d GREEN_timeout=%b next_state=%s",
           $time,
+          dut.present_state.name(),
           pedestrian_button,
-          pedestrian_light,
-          ns_light,
-          ew_light,
-          dut.present_state.name());
+          dut.pedestrian_request,
+          dut.counter_GREEN,
+          dut.GREEN_timeout,
+          dut.next_state.name());
 end
 
 //stimulus
 initial begin
   clk = '0;
-  forever #10 clk = ~clk;
+  repeat(600) #10 clk = ~clk;
 end
 
 initial begin
   rst_n = 0;
   pedestrian_button = 0;
-  repeat(2) @(posedge clk);
+  #5;
   rst_n = 1;
 end
 
 task automatic press_button;
   begin
+    pedestrian_button = 1;
     @(posedge clk);
-    pedestrian_button <= 1;
-    @(posedge clk);
-    pedestrian_button <= 0;
+    pedestrian_button = 0;
   end
 endtask
 
