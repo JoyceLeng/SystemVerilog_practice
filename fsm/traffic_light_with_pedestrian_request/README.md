@@ -16,7 +16,7 @@ NS_AMBER --> Pedestrian_request --> ALL_RED_BEFORE_PED
 EW_GREEN --> Pedestrian_request --> GREEN_timeout --> ALL_RED_BEFORE_PED
 EW_AMBER --> Pedestrian_request --> ALL_RED_BEFORE_PED
 
-ALL_RED_BEFORE_PED: timer_3 --> PED_WALK: Pedestrian request cleared, timer_10 --> ALL_RED_AFTER_PED: timer_3
+ALL_RED_BEFORE_PED --> PED_WALK --> ALL_RED_AFTER_PED
 ```
 
 ## Description
