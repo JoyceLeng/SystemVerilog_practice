@@ -9,18 +9,18 @@ stateDiagram-v2
 %%=========================
 %% Normal traffic sequence
 %%=========================
-NS_GREEN --> NS_AMBER: GREEN_timeout\n!Pedestrian_request
-NS_AMBER --> EW_GREEN: AMBER_timeout\n!Pedestrian_request
-EW_GREEN --> EW_AMBER: GREEN_timeout\n!Pedestrian_request
-EW_AMBER --> NS_GREEN: AMBER_timeout\n!Pedestrian_request
+NS_GREEN --> NS_AMBER: GREEN_timeout && !Pedestrian_request
+NS_AMBER --> EW_GREEN: AMBER_timeout && !Pedestrian_request
+EW_GREEN --> EW_AMBER: GREEN_timeout && !Pedestrian_request
+EW_AMBER --> NS_GREEN: AMBER_timeout && !Pedestrian_request
 
 %%=====================
 %% Pedestrian request
 %%=====================
 
-NS_GREEN --> ALL_RED_BEFORE_PED: GREEN_timeout\nPedestrian_request
+NS_GREEN --> ALL_RED_BEFORE_PED: GREEN_timeout && Pedestrian_request
 NS_AMBER --> ALL_RED_BEFORE_PED: Pedestrian_request
-EW_GREEN --> ALL_RED_BEFORE_PED: GREEN_timeout\nPedestrian_request
+EW_GREEN --> ALL_RED_BEFORE_PED: GREEN_timeout && Pedestrian_request
 EW_AMBER --> ALL_RED_BEFORE_PED: Pedestrian_request
 
 ALL_RED_BEFORE_PED --> PED_WALK: ALL_RED_timeout
