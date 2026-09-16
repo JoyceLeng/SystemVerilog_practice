@@ -10,7 +10,7 @@ module S_fifo #(parameter depth = 4, width = 8)
  output logic [width-1:0]dout,
  output logic empty, full  //flags
 );
-
+ 
 //create a memory with 4*8 metrix
 logic [width-1:0]mem[0:depth-1];
 //write pointer
