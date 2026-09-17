@@ -3,10 +3,22 @@
 ## Description
 This design is for Synchronous FIFO and its Testbench with Reference Model and Assertions, including corner cases
 
+## Verification Results
+
+The FIFO was verified using a SystemVerilog testbench with a reference
+model (queue) acting as the expected-data model.
+
+The testbench performs:
+- Sequential write operations
+- Sequential read operations
+- Full and empty condition checks
+- Data comparison between the DUT and reference model
+
 ## Waveform 
 ![Waveform](S_fifo_waveform.png)
 
 ## Transcript Result
+```text
 Time=0 rst_n=0 wr_en=0 rd_en=0 din=00 dout=00 empty=1 full=0
 Time=5 rst_n=1 wr_en=0 rd_en=0 din=00 dout=00 empty=1 full=0
 Time=10 rst_n=1 wr_en=1 rd_en=0 din=02 dout=00 empty=1 full=0   Reference model: 02
@@ -31,3 +43,15 @@ Time=370 rst_n=1 wr_en=0 rd_en=1 din=09 dout=01 empty=0 full=0   MATCH: actual=0
 Time=390 rst_n=1 wr_en=0 rd_en=1 din=09 dout=03 empty=0 full=0   MATCH: actual=03, expected=03
 Time=410 rst_n=1 wr_en=0 rd_en=1 din=09 dout=05 empty=0 full=0   MATCH: actual=05, expected=05
 Time=430 rst_n=1 wr_en=0 rd_en=1 din=09 dout=07 empty=1 full=0   MATCH: actual=07, expected=07
+```
+
+## Verification Summary
+
+All data read from the FIFO matched the expected values
+stored in the reference model.
+
+The FIFO was also tested for:
+- Empty condition
+- Full condition
+- FIFO ordering (first-in, first-out)
+- Read and write operations
