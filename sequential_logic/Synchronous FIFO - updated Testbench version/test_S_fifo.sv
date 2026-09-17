@@ -29,7 +29,7 @@ end
 //initial clk
 initial begin
   clk = '0;
-  repeat(80) #10ns clk = ~clk;
+  repeat(70) #10ns clk = ~clk;
 end
 
 //initial reset
@@ -111,7 +111,7 @@ initial begin
   @(posedge clk);
   @(posedge clk); //dout=[01 03 05 07]
   @(posedge clk); //09 should be read
-  
+
 end
 
 //////////////////create a reference model//////////////////////////
@@ -123,7 +123,7 @@ always @(posedge clk) begin
   end
 
   if(rd_en && !empty) begin
-    #1;   //DUT: dout<=mem[rd_p]
+    #1;
     if(expected_queue.size() == 0) begin
       $error("Error: reference model is empty");
     end
