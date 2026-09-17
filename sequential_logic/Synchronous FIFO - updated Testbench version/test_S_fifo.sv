@@ -29,7 +29,7 @@ end
 //initial clk
 initial begin
   clk = '0;
-  forever #10ns clk = ~clk;
+  repeat(80) #10ns clk = ~clk;
 end
 
 //initial reset
@@ -62,7 +62,6 @@ initial begin
   @(posedge clk);
   wr_en <= '0;
   ////////////////////////read only//////////////////////////
-  @(posedge clk);
   rd_en <= '1;
   @(posedge clk); //start reading
   @(posedge clk);
@@ -124,7 +123,7 @@ always @(posedge clk) begin
   end
 
   if(rd_en && !empty) begin
-    #1;
+    #1;   //DUT: dout<=mem[rd_p]
     if(expected_queue.size() == 0) begin
       $error("Error: reference model is empty");
     end
