@@ -11,7 +11,10 @@ The project provides practical experience in RTL design, processor architecture,
 ## Tools: SystemVerilog, QuestaSim
 
 ## picoMIPS CPU Architecture
-![Architecture](picoMIPS CPU Architecture Infographic.png)
+The following diagram illustrates the overall architecture
+of the PicoMIPS processor and its main functional components.
+
+![PicoMIPS Processor Architecture](picoMIPS CPU Architecture Infographic.png)
 
 ## Waveform 
 
