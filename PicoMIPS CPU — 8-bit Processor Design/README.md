@@ -22,5 +22,6 @@ of the PicoMIPS processor and its main functional components.
 ```test
 Time: 330 ns  Scope: picoMIPS_tb.dut.decoder File: C:/Users/lucas/OneDrive/Desktop/questasim_projects/questasim_bringup/picoMIPS design/DECODER_unit.sv Line: 81
 Pass, y=24, expected_y=24
+```
 
 ## Verification Summary
