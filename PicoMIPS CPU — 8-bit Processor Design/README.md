@@ -14,7 +14,7 @@ The project provides practical experience in RTL design, processor architecture,
 The following diagram illustrates the overall architecture
 of the PicoMIPS processor and its main functional components.
 
-![PicoMIPS Processor Architecture](images/picoMIPS_architecture.png)
+![picoMIPS_architecture](PicoMIPS CPU — 8-bit Processor Design/picoMIPS_architecture.png)
 
 ## Waveform 
 
